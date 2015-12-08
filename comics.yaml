@@ -1,0 +1,24 @@
+XKCD:
+  folder: xkcd
+  generatehtml: yes
+  includealt: yes
+  initialurl: http://xkcd.com/1/
+  links:
+    prev: a[rel="prev"]
+    next: a[rel="next"]
+  image: "#comic img"
+  title: "#ctitle"
+
+DumbingOfAge:
+  folder: DoA
+  generatehtml: yes
+  includealt: no
+  initialurl: http://www.dumbingofage.com/2010/comic/book-1/01-move-in-day/home/
+  links:
+    prev: .navi-prev
+    next: .navi-next
+  image: "#comic img"
+  title: "h2.post-title"
+  description: ".entry"
+
+#http://www.questionablecontent.net/view.php?comic=1
