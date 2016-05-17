@@ -1,37 +1,11 @@
-comics:
-  XKCD:
-    folder: xkcd
-    initialurl: http://xkcd.com/1/
-    mixins: [a_rel_links]
-    includealt: yes
-    image: "#comic img"
-    title: "#ctitle"
-    layout: pane
-
-  DumbingOfAge:
-    folder: DoA
-    initialurl: http://www.dumbingofage.com/2010/comic/book-1/01-move-in-day/home/
-    base: wordpress
-
-  Validation:
-    initialurl: http://www.validationcomic.com/comic/validation-1/
-    base: wordpress
-    links:
-      prev: .comic-nav-previous
-      next: .comic-nav-next
-
-  SandraAndWoo:
-    initialurl: http://www.sandraandwoo.com/2000/01/01/welcome-to-sandra-and-woo/
-    base: sandraandwoo
-
-  Gaia:
-    initialurl: http://www.sandraandwoo.com/gaia/2000/01/01/welcome-to-gaia/
-    base: sandraandwoo
-    layout: vertical
-
-##http://www.sandraandwoo.com/2008/10/19/a-sly-raccoon/
-
 presets:
+  hiveworks:
+    links:
+      prev: 'a[rel="prev"]'
+      next: 'a[rel="next"]'
+    image: 'img#cc-comic'
+    title: 'img#cc-comic!title'
+    description: '.cc-newsbody'
   wordpress:
     includealt: no
     links:
@@ -40,14 +14,42 @@ presets:
     image: "#comic img"
     title: h2.post-title
     description: .entry
+  wordpress-comic-nav:
+    base: wordpress
+    links:
+      prev: .comic-nav-previous
+      next: .comic-nav-next
+  wordpress-inkblot:
+    includealt: no
+    mixins: [a_rel_links]
+    image: img.attachment-full
+    title: .post-header h1
+    description: .post-content
+  smackjeeves:
+    includealt: no
+    links:
+      prev: .navi-prev
+      next: .navi-next
+    image: "img#comic_image"
+    title: h2.post-title
+    description: .entry
   sandraandwoo:
     includealt: no
     links:
       prev: 'a[rel="prev"]'
       next: 'a[rel="next"]'
     image: "#comic img"
+    title: '.post-comic h2'
     description: .entry blockquote
-    title: h2
+  mangahere:
+    includealt: no
+    links:
+      prev: .prew_page
+      next: .next_page
+    image: "#image"
+    title: "#image!alt"
+    description: ".info-content"
+
 
 mixins:
   a_rel_links:

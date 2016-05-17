@@ -1,0 +1,25 @@
+<html>
+<head>
+  {% block headtag %}
+    <meta charset="utf-8" />
+    <title>{{ comic_info.name }}</title>
+    {% block head %}
+    {% endblock %}
+  {% endblock %}
+</head>
+<body>
+  <div class='container'>
+    {% for comic_id, comic in comics.items() %}
+      {% block comicpanel scoped %}
+        <div class='comic' id='comic-{{ comic_id }}'>
+          <h2><b>{{comic_id}}.</b> {{ comic.title }}<a href='{{ comic.origin }}' class='original-link'>(original)</a></h2>
+          <img src='{{ images[comic.image_url] }}' {% if comic_info.includealt %} alt='{{comic.description}}' title='{{comic.description}}' {% endif %} />
+          <div class='comic_description'>
+            {{ comic.description }}
+          </div>
+        </div>
+      {% endblock %}
+    {% endfor %}
+  </div>
+</body>
+</html>
