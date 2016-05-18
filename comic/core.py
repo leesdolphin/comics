@@ -93,8 +93,7 @@ async def load_guess_for(name, url, comic_presets, comic_mixins):
     return name, data, comics
 
 
-
-async def main():
+async def async_main():
     pending_tasks = FutureList()
     with open(FILE) as f:
         comics_data = safe_load(f)
@@ -128,35 +127,37 @@ def list_all_tasks():
         print()
 
 
-loop = asyncio.get_event_loop()
-# loop.set_debug(True)
-main = asyncio.ensure_future(main())
-loop.add_signal_handler(signal.SIGHUP, list_all_tasks)
-loop.add_signal_handler(signal.SIGINT, main.cancel)
+def main():
+    loop = asyncio.get_event_loop()
+    # loop.set_debug(True)
+    main = asyncio.ensure_future(async_main())
+    loop.add_signal_handler(signal.SIGHUP, list_all_tasks)
+    loop.add_signal_handler(signal.SIGINT, main.cancel)
+
+    try:
+        loop.run_until_complete(main)
+    except:
+        log.exception('Main failed')
+        pass
+    print("MAIN COMPLETE")
+
+    def check_task(task):
+        return task.done() and not task.cancelled() and not task.exception()
+
+    tasks = asyncio.Task.all_tasks(asyncio.get_event_loop())
+    retrieved_tasks = set()
+    while any((not check_task(task) for task in tasks)):
+        task_list = FutureList((task for task in tasks if not check_task(task)))
+        log.info("Pending Loop. Has %d items", len(task_list))
+        for task in task_list.as_completed():
+            try:
+                loop.run_until_complete(task)
+            except:
+                log.exception('Task raised exception %r', task)
+                pass
+        retrieved_tasks = retrieved_tasks | tasks
+        tasks = asyncio.Task.all_tasks(asyncio.get_event_loop()) - retrieved_tasks
+        log.info("Pending Loop. Has %d new items", len([task for task in tasks if not check_task(task)]))
 
 
-try:
-    loop.run_until_complete(main)
-except:
-    log.exception('Main failed')
-    pass
-print("MAIN COMPLETE")
-def check_task(task):
-    return task.done() and not task.cancelled() and not task.exception()
-tasks = asyncio.Task.all_tasks(asyncio.get_event_loop())
-retrieved_tasks = set()
-while any((not check_task(task) for task in tasks)):
-    task_list = FutureList((task for task in tasks if not check_task(task)))
-    log.info("Pending Loop. Has %d items", len(task_list))
-    for task in task_list.as_completed():
-        try:
-            loop.run_until_complete(task)
-        except:
-            log.exception('Task raised exception %r', task)
-            pass
-    retrieved_tasks = retrieved_tasks | tasks
-    tasks = asyncio.Task.all_tasks(asyncio.get_event_loop()) - retrieved_tasks
-    log.info("Pending Loop. Has %d new items", len([task for task in tasks if not check_task(task)]))
-
-
-loop.close()
+    loop.close()

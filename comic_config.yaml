@@ -1,9 +1,3 @@
-comics:
-  # xkcd: http://xkcd.com/1/
-  DumbingOfAge:
-    folder: DoA
-    initialurl: http://www.dumbingofage.com/2010/comic/book-1/01-move-in-day/home/
-    base: wordpress
 presets:
   hiveworks:
     links:

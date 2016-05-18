@@ -55,3 +55,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# My stuff
+venv/
+comics.yaml
